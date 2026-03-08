@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Identidade</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0f'/%3E%3Cline x1='16' y1='4' x2='16' y2='28' stroke='%23ffffff' stroke-width='.6' opacity='.1'/%3E%3Cline x1='4' y1='16' x2='28' y2='16' stroke='%23ffffff' stroke-width='.6' opacity='.1'/%3E%3Cpolygon points='16,5 27,16 16,27 5,16' fill='none' stroke='%23ffffff' stroke-width='.5' opacity='.08'/%3E%3Cpolygon points='16,8 24,16 16,24 8,16' fill='%238A2BE2' fill-opacity='.28' stroke='%2300E5FF' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='8' r='2.2' fill='%2300E5FF'/%3E%3Ccircle cx='24' cy='16' r='2.2' fill='%238A2BE2'/%3E%3Ccircle cx='16' cy='24' r='2.2' fill='%23FF6A00'/%3E%3Ccircle cx='8' cy='16' r='2.2' fill='%2300E5FF'/%3E%3C/svg%3E">
   <style>
     /* ===================== RESET & BASE ===================== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -383,48 +384,136 @@
       box-shadow: 0 0 8px rgba(255,106,0,0.4);
     }
 
-    /* Score grid */
-    .score-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
+    /* ===================== FLOW ZONE ===================== */
+    .flow-card {
+      border-color: rgba(0,229,255,0.12);
+      position: relative;
+      overflow: hidden;
     }
-    .score-item {
+    .flow-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--grad-btn);
+    }
+    .flow-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .flow-book-ref {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .flow-intro {
+      font-size: 0.9rem;
+      color: #c0c0da;
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .flow-item {
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px 16px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-    .score-name {
-      font-size: 0.72rem;
+    .flow-item.trigger { border-color: rgba(0,229,255,0.2); }
+    .flow-item.blocker { border-color: rgba(255,106,0,0.2); }
+    .flow-item.practice{ border-color: rgba(138,43,226,0.2); }
+    .flow-item-icon { font-size: 1.1rem; }
+    .flow-item-label {
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .flow-item-text {
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    /* Channel bar */
+    .flow-channel-label-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .flow-channel-label {
+      font-size: 0.62rem;
       letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 6px;
     }
-    .score-bar-track {
-      width: 100%;
-      height: 5px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-    .score-bar-fill {
-      height: 100%;
-      border-radius: 999px;
+    .flow-channel-label.center {
       background: var(--grad-btn);
-      transition: width 1s cubic-bezier(.4,0,.2,1);
-    }
-    .score-bar-fill.secondary { background: linear-gradient(90deg, var(--violet), var(--orange)); }
-    .score-bar-fill.tertiary  { background: linear-gradient(90deg, var(--orange), #ff2d78); }
-    .score-bar-fill.quaternary{ background: linear-gradient(90deg, #00c9ff, #92fe9d); }
-
-    .score-pct {
-      font-size: 0.78rem;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-weight: 700;
-      color: var(--text);
+    }
+    .flow-channel-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(0,229,255,0.08) 0%,
+        rgba(0,229,255,0.25) 28%,
+        var(--cyan) 42%,
+        var(--violet) 50%,
+        var(--orange) 60%,
+        rgba(255,106,0,0.25) 72%,
+        rgba(255,106,0,0.08) 100%
+      );
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .flow-channel-indicator {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--cyan);
+      box-shadow: 0 0 12px rgba(0,229,255,0.7);
+      transition: left 1.2s cubic-bezier(.4,0,.2,1);
+    }
+    .flow-channel-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 520px) {
+      .flow-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Radar chart */
+    .radar-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0 4px;
+    }
+    #radar-canvas {
+      max-width: 100%;
+      height: auto;
     }
 
     /* Restart button */
@@ -561,9 +650,32 @@
       <ul class="trait-list" id="result-development"></ul>
     </div>
 
+    <!-- Flow Zone Card -->
+    <div class="result-card flow-card" id="result-flow-card">
+      <div class="flow-header">
+        <p class="result-section-title" style="margin-bottom:0">Zona de Flow</p>
+        <span class="flow-book-ref">Csikszentmihalyi · Flow</span>
+      </div>
+      <p class="flow-intro" id="flow-intro"></p>
+      <div class="flow-grid" id="flow-grid"></div>
+
+      <p class="result-section-title">Seu canal de desempenho</p>
+      <div class="flow-channel-label-row">
+        <span class="flow-channel-label">Tédio</span>
+        <span class="flow-channel-label center">&#9670; Flow</span>
+        <span class="flow-channel-label">Ansiedade</span>
+      </div>
+      <div class="flow-channel-bar">
+        <div class="flow-channel-indicator" id="flow-indicator" style="left:0%"></div>
+      </div>
+      <p class="flow-channel-desc" id="flow-channel-desc"></p>
+    </div>
+
     <div class="result-card">
-      <p class="result-section-title">Distribuição dos perfis</p>
-      <div class="score-grid" id="score-grid"></div>
+      <p class="result-section-title">Mapa comportamental</p>
+      <div class="radar-wrap">
+        <canvas id="radar-canvas"></canvas>
+      </div>
     </div>
 
     <button class="btn-secondary" onclick="restartQuiz()">
@@ -677,6 +789,14 @@
         strengths:   ["Transforma decisão em ação em segundos", "Foco cirúrgico — ruído não te distrai", "Presença que move pessoas sem precisar pedir", "Executa onde outros ainda estão debatendo", "Coragem para começar sem garantias"],
         development: ["Desacelerar para ouvir quem pensa diferente", "Reconhecer que o processo também tem valor", "Cultivar paciência como estratégia, não fraqueza", "Deixar que outros também liderem — e aprender com isso"],
         colorClass:  "primary",
+        flow: {
+          intro:       "Seu Flow é de alta intensidade — curto, explosivo e orientado a resultado. Quando você entra no estado, o tempo desaparece e a execução flui quase sem esforço. O risco é ultrapassar o canal e entrar em modo de hiperatividade sem foco real.",
+          trigger:     "Meta clara + autonomia total + resultado mensurável no curto prazo",
+          blocker:     "Burocracia, reuniões sem decisão e dependência de validação externa",
+          practice:    "Blocos fixos de 90 min, sem notificações. Defina UMA entrega por bloco. Seu Flow exige ambiente limpo — proteja esse espaço como prioridade.",
+          channelPos:  62,
+          channelDesc: "Você tende ao lado do desafio — sua força está em avançar. Seu ponto cego é ignorar quando o desafio já superou a capacidade do momento.",
+        },
       },
       S: {
         name:        "O Conector",
@@ -685,6 +805,14 @@
         strengths:   ["Conecta pessoas de formas que ninguém mais consegue", "Cria clima, engajamento e pertencimento", "Comunicação que inspira e não impõe", "Criatividade que surge naturalmente nas brechas", "Otimismo genuíno que resiste à adversidade"],
         development: ["Desenvolver disciplina para terminar o que começa", "Praticar a escuta sem já estar pensando na resposta", "Ancorar energia em planejamento concreto", "Aprender a dizer não sem culpa"],
         colorClass:  "secondary",
+        flow: {
+          intro:       "Seu Flow acontece no contato — com pessoas, ideias e possibilidades. Você entra em estado de alto desempenho quando sente que o que faz importa para alguém. O risco é confundir agitação social com produtividade real.",
+          trigger:     "Interação humana genuína + propósito visível + variedade de estímulos",
+          blocker:     "Isolamento prolongado, tarefas repetitivas e ambientes sem troca",
+          practice:    "Antes de tarefas solitárias, conecte-as a um propósito humano concreto. Pergunte: 'Para quem isso vai importar?' Isso acende seu Flow mesmo em silêncio.",
+          channelPos:  54,
+          channelDesc: "Você oscila entre o Flow e o tédio rapidamente. Sua chave é encontrar o humano por trás de cada tarefa — isso sustenta o estado mesmo nas entregas menos glamorosas.",
+        },
       },
       F: {
         name:        "O Guardião",
@@ -693,6 +821,14 @@
         strengths:   ["Mantém a calma quando todos estão em pânico", "Lealdade que não oscila com o vento", "Mediação natural — resolve conflitos sem criar novos", "Consistência que constrói confiança real ao longo do tempo", "Presença que acalma sem precisar falar"],
         development: ["Ocupar espaço e expressar suas opiniões com mais força", "Encarar mudanças como aliadas, não ameaças", "Agir antes de ter todas as certezas", "Defender seus próprios limites com mais clareza"],
         colorClass:  "tertiary",
+        flow: {
+          intro:       "Seu Flow é silencioso e profundo. Ele não grita — ele sustenta. Você entra no estado quando o ambiente está seguro, o ritmo é previsível e as expectativas são claras. Mudanças bruscas são o seu maior inimigo nesse caminho.",
+          trigger:     "Ambiente estável + ritmo consistente + clareza sobre o que se espera de você",
+          blocker:     "Mudanças abruptas, conflitos sem resolução e múltiplas demandas simultâneas",
+          practice:    "Crie uma rotina de início inabalável — sempre a mesma sequência, no mesmo horário. Seu Flow acontece no silêncio da repetição. Rituais são sua porta de entrada.",
+          channelPos:  38,
+          channelDesc: "Você tende ao lado da estabilidade — sua força está na consistência. Seu ponto cego é evitar desafios que poderiam expandir suas habilidades e abrir novas zonas de Flow.",
+        },
       },
       M: {
         name:        "O Arquiteto",
@@ -701,6 +837,14 @@
         strengths:   ["Enxerga padrões e riscos que outros ignoram", "Qualidade como padrão inegociável", "Planejamento detalhado que evita problemas futuros", "Comprometimento profundo com o que acredita", "Sensibilidade que gera soluções criativas e precisas"],
         development: ["Aprender que feito e imperfeito ainda tem valor", "Praticar autocompaixão — você é mais duro consigo do que precisa", "Tomar decisões com mais agilidade quando os dados são suficientes", "Confiar mais nas pessoas do que nos processos"],
         colorClass:  "quaternary",
+        flow: {
+          intro:       "Seu Flow é o mais profundo de todos os perfis — quando você entra, literalmente perde a noção do tempo. Problemas complexos são seu combustível. O risco é o perfeccionismo: o padrão que você coloca em si mesmo pode te manter fora do canal por tempo demais.",
+          trigger:     "Problema complexo + liberdade para fazer do jeito certo + ausência de interrupções",
+          blocker:     "Ruído externo, prazos arbitrários e exigência de superficialidade",
+          practice:    "Sinalize seu estado de concentração para as pessoas ao redor — literalmente. Fone, sinal visual, mensagem automática. Seu Flow é raro e valioso: quando ele aparecer, proteja-o a qualquer custo.",
+          channelPos:  66,
+          channelDesc: "Você tende à ansiedade — não pelo excesso de tarefas, mas pelo padrão interno que você mesmo cria. Aprender a entrar no Flow com o que tem (não com o que quer ter) é o seu maior salto.",
+        },
       },
     };
 
@@ -796,35 +940,175 @@
         `<li class="trait-item"><span class="trait-dot dev-dot"></span><span>${d}</span></li>`
       ).join('');
 
-      // Score bars
-      const profileOrder = [
-        { key: 'C', label: 'O Construtor', cls: '' },
-        { key: 'S', label: 'O Conector',   cls: 'secondary' },
-        { key: 'F', label: 'O Guardião',   cls: 'tertiary' },
-        { key: 'M', label: 'O Arquiteto',  cls: 'quaternary' },
-      ];
+      // Flow Zone
+      document.getElementById('flow-intro').textContent = p.flow.intro;
+      document.getElementById('flow-grid').innerHTML = `
+        <div class="flow-item trigger">
+          <span class="flow-item-icon">&#9889;</span>
+          <span class="flow-item-label">Gatilho</span>
+          <span class="flow-item-text">${p.flow.trigger}</span>
+        </div>
+        <div class="flow-item blocker">
+          <span class="flow-item-icon">&#9888;</span>
+          <span class="flow-item-label">Bloqueador</span>
+          <span class="flow-item-text">${p.flow.blocker}</span>
+        </div>
+        <div class="flow-item practice">
+          <span class="flow-item-icon">&#10024;</span>
+          <span class="flow-item-label">Prática</span>
+          <span class="flow-item-text">${p.flow.practice}</span>
+        </div>
+      `;
+      document.getElementById('flow-channel-desc').textContent = p.flow.channelDesc;
 
-      const grid = document.getElementById('score-grid');
-      grid.innerHTML = profileOrder.map(({ key, label, cls }) => {
-        const pct = Math.round((scores[key] / total) * 100);
-        return `
-          <div class="score-item">
-            <p class="score-name">${label}</p>
-            <div class="score-bar-track">
-              <div class="score-bar-fill ${cls}" style="width:0%" data-target="${pct}%"></div>
-            </div>
-            <span class="score-pct">${pct}%</span>
-          </div>`;
-      }).join('');
+      // Animate indicator after screen appears
+      setTimeout(() => {
+        document.getElementById('flow-indicator').style.left = p.flow.channelPos + '%';
+      }, 500);
 
       showScreen('screen-result');
 
-      // Animate bars after screen appears
+      // Draw radar after screen appears
       setTimeout(() => {
-        document.querySelectorAll('.score-bar-fill').forEach(bar => {
-          bar.style.width = bar.dataset.target;
+        drawRadar(scores, total);
+      }, 400);
+    }
+
+    /* ===================== RADAR CHART ===================== */
+    function drawRadar(scores, total) {
+      const canvas = document.getElementById('radar-canvas');
+      const dpr    = window.devicePixelRatio || 1;
+      const SIZE   = 300;
+      canvas.width  = SIZE * dpr;
+      canvas.height = SIZE * dpr;
+      canvas.style.width  = SIZE + 'px';
+      canvas.style.height = SIZE + 'px';
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const cx   = SIZE / 2;
+      const cy   = SIZE / 2;
+      const maxR = SIZE * 0.32;
+      const GRID = 4;
+
+      // Axes: top, right, bottom, left
+      const axes = [
+        { key: 'C', label: ['O', 'Construtor'], angle: -Math.PI / 2 },
+        { key: 'S', label: ['O', 'Conector'],   angle:  0 },
+        { key: 'F', label: ['O', 'Guardião'],   angle:  Math.PI / 2 },
+        { key: 'M', label: ['O', 'Arquiteto'],  angle:  Math.PI },
+      ];
+
+      let progress = 0;
+
+      function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+      function frame() {
+        progress = Math.min(progress + 0.025, 1);
+        const t  = ease(progress);
+        ctx.clearRect(0, 0, SIZE, SIZE);
+
+        // Grid rings (diamond shape)
+        for (let i = 1; i <= GRID; i++) {
+          const r = (i / GRID) * maxR;
+          ctx.beginPath();
+          axes.forEach((ax, idx) => {
+            const x = cx + Math.cos(ax.angle) * r;
+            const y = cy + Math.sin(ax.angle) * r;
+            idx === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          });
+          ctx.closePath();
+          ctx.strokeStyle = i === GRID
+            ? 'rgba(255,255,255,0.1)'
+            : 'rgba(255,255,255,0.04)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // Axis lines
+        axes.forEach(ax => {
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + Math.cos(ax.angle) * maxR, cy + Math.sin(ax.angle) * maxR);
+          ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
         });
-      }, 450);
+
+        // Data polygon
+        ctx.beginPath();
+        axes.forEach((ax, i) => {
+          const r = (scores[ax.key] / total) * maxR * t;
+          const x = cx + Math.cos(ax.angle) * r;
+          const y = cy + Math.sin(ax.angle) * r;
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+
+        // Gradient fill
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+        grd.addColorStop(0,   'rgba(0,229,255,0.45)');
+        grd.addColorStop(0.5, 'rgba(138,43,226,0.30)');
+        grd.addColorStop(1,   'rgba(255,106,0,0.15)');
+        ctx.fillStyle = grd;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,229,255,0.75)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Vertex dots + score labels
+        axes.forEach(ax => {
+          const r  = (scores[ax.key] / total) * maxR * t;
+          const vx = cx + Math.cos(ax.angle) * r;
+          const vy = cy + Math.sin(ax.angle) * r;
+
+          // Glow dot
+          ctx.beginPath();
+          ctx.arc(vx, vy, 5, 0, Math.PI * 2);
+          ctx.fillStyle = '#00E5FF';
+          ctx.shadowColor = '#00E5FF';
+          ctx.shadowBlur = 10;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          // Score % near vertex
+          if (t > 0.6) {
+            const pct    = Math.round((scores[ax.key] / total) * 100);
+            const labelR = r + 14;
+            const lx     = cx + Math.cos(ax.angle) * labelR;
+            const ly     = cy + Math.sin(ax.angle) * labelR;
+            ctx.font      = `bold ${Math.round(10 * dpr) / dpr}px system-ui`;
+            ctx.fillStyle = 'rgba(255,255,255,' + ((t - 0.6) / 0.4) + ')';
+            ctx.textAlign    = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pct + '%', lx, ly);
+          }
+        });
+
+        // Axis labels (static, always visible)
+        const labelPad = maxR + 30;
+        axes.forEach(ax => {
+          const lx = cx + Math.cos(ax.angle) * labelPad;
+          const ly = cy + Math.sin(ax.angle) * labelPad;
+          ctx.font      = `11px system-ui`;
+          ctx.fillStyle = '#7777aa';
+          ctx.textBaseline = 'middle';
+
+          // Align based on axis direction
+          if (Math.abs(ax.angle) < 0.1)          ctx.textAlign = 'left';   // right
+          else if (Math.abs(ax.angle - Math.PI) < 0.1) ctx.textAlign = 'right';  // left
+          else                                    ctx.textAlign = 'center'; // top/bottom
+
+          const lineH = 13;
+          ctx.fillText(ax.label[0], lx, ly - lineH / 2);
+          ctx.fillText(ax.label[1], lx, ly + lineH / 2);
+        });
+
+        if (progress < 1) requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
     }
 
     function restartQuiz() {
